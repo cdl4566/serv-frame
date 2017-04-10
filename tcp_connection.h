@@ -55,6 +55,6 @@ class TcpConnection : public boost::enable_shared_from_this<TcpConnection>
 
 };
 
-void messageArrived(const TcpConnectionPtr &conn, Buffer *buf);
+void defaultOnMessage(const TcpConnectionPtr &conn, Buffer *buf);
 
 #endif

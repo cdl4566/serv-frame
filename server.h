@@ -9,9 +9,45 @@ class Server{
 		Server(EventLoop *loop, const int port);
 		~Server();
 		void start();
+		
 	private:
-		TcpServer tcpServer_;
+		void onConnection(TcpConnectionPtr conn);
+		void onMessage(TcpConnectionPtr conn, Buffer *buf);
 
+		typedef boost::weak_ptr<TcpConnection> WeakTcpConnectionPtr;
+
+
+		struct Entry
+		{
+			explicit Entry(const TcpConnectionPtr conn)
+				:weakConn_(conn)
+			{
+
+			}
+
+			~Entry()
+			{
+				TcpConnection conn = weakConn_.lock();
+				if(conn){
+					//conn->shutdown();
+				}
+			}
+
+			WeakTcpConnectionPtr weakConn_;
+			
+
+		};
+
+
+	private:
+		typedef boost::shared_ptr<Entry> EntryPtr;
+		typedef boost::weak_ptr<Entry> WeakEntryPtr;
+		typedef std::set<EntryPtr> Bucket;
+		typedef boost::circular_buffer<Bucket> WeakConnectionList;
+
+		TcpServer tcpServer_;
+		WeakConnectionList connectionBuckets_;
 };
+
 
 #endif

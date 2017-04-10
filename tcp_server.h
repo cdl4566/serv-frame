@@ -27,6 +27,13 @@ class TcpServer{
 		void newConnection(int fd);
 		void removeConnectionInLoop(const TcpConnectionPtr & conn);
 		void removeConnection(const TcpConnectionPtr & conn);
+
+		void setMessageCallback(){
+
+		}
+		void setConnectionCallback(){
+
+		}
 	private:
 		EventLoop *loop_;
 		boost::scoped_ptr<Acceptor> acceptor_;

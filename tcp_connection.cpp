@@ -3,18 +3,16 @@
 #include "event_loop.h"
 #include "base/netopr.h"
 
-#include "application/test_receive_send.h"
-
 #include<iostream>
 
-void messageArrived(const TcpConnectionPtr &conn, Buffer *buf)
+void defaultOnMessage(const TcpConnectionPtr &conn, Buffer *buf)
 {
 	/*static int cnt = 0;
 	std::string msg(buf->retriveAllAsString());
 	std::cout << "recive count " << cnt++ << std::endl;
 	std::cout << "connection " << conn->name() << " msg " << msg << std::endl;
 */
-	application::testrs::retrive_data(conn, buf);
+	buf->retriveAll();
 }
 
 TcpConnection::TcpConnection(EventLoop* loop, int fd, 
