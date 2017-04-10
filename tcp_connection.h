@@ -8,13 +8,13 @@
 #include <boost/function.hpp>
 
 #include "buffer.h"
+#include "callbacks.h"
 
 class EventLoop;
 class Channel;
 class TcpConnection;
 typedef boost::shared_ptr<TcpConnection> TcpConnectionPtr;
 typedef boost::function<void (const TcpConnectionPtr&)>  CloseCallback;
-typedef boost::function<void (const TcpConnectionPtr&, Buffer *)> MessageCallback;
 
 class TcpConnection : public boost::enable_shared_from_this<TcpConnection>
 {
@@ -31,6 +31,10 @@ class TcpConnection : public boost::enable_shared_from_this<TcpConnection>
 		void setCloseCallback(const CloseCallback & cb){
 			closeCallback_ = cb;
 		}
+		void setConnectionCallback(const ConnectionCallback& cb){
+			connectionCallback_ = cb;
+		}
+		
 		void setMessageCallback(const MessageCallback & cb){
 			messageCallback_ = cb;
 		}
@@ -50,6 +54,7 @@ class TcpConnection : public boost::enable_shared_from_this<TcpConnection>
 		const int fd_;
 		CloseCallback closeCallback_;
 		MessageCallback messageCallback_;
+		ConnectionCallback connectionCallback_;
 		Buffer inputBuffer_;
 		Buffer outputBuffer_;
 

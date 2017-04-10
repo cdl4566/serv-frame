@@ -81,6 +81,8 @@ void TcpConnection::connectEstablished()
 {
 	loop_->assertInThreadLoop();
 	channel_->enableReading();
+
+	connectionCallback_(shared_from_this());
 }
 
 void TcpConnection::connectDestroyed()

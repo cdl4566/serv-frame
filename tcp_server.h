@@ -8,6 +8,7 @@
 
 #include "base/Atomic.h"
 #include "tcp_connection.h"
+#include "callbacks.h"
 
 class EventLoop;
 class Acceptor;
@@ -28,11 +29,11 @@ class TcpServer{
 		void removeConnectionInLoop(const TcpConnectionPtr & conn);
 		void removeConnection(const TcpConnectionPtr & conn);
 
-		void setMessageCallback(){
-
+		void setMessageCallback(const ConnectionCallback& cb){
+			connectionCallback_ = cb;
 		}
-		void setConnectionCallback(){
-
+		void setConnectionCallback(const MessageCallback& cb){
+			messageCallback_ = cb;
 		}
 	private:
 		EventLoop *loop_;
@@ -46,6 +47,9 @@ class TcpServer{
 
 		typedef std::map<std::string, TcpConnectionPtr> ConnectionMap;
 		ConnectionMap connections_;
+
+		ConnectionCallback connectionCallback_;
+		MessageCallback messageCallback_;
 	 
 };
 #endif

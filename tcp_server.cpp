@@ -45,7 +45,8 @@ void TcpServer::newConnection(int fd)
 
 	TcpConnectionPtr conn(new TcpConnection(ioLoop, fd, connName));
 	connections_[connName] = conn; //otherwise conn will be destroyed by shared_ptr when this function ends
-	conn->setMessageCallback(messageArrived);
+	conn->setMessageCallback(messageCallback_);
+	conn->setConnectionCallback(connectionCallback_);
 	conn->setCloseCallback(boost::bind(&TcpServer::removeConnection, this, _1));
 	ioLoop->runInLoop(boost::bind(&TcpConnection::connectEstablished, conn));
 }
@@ -53,6 +54,7 @@ void TcpServer::newConnection(int fd)
 void TcpServer::removeConnection(const TcpConnectionPtr & conn)
 {
 	//why use loop_?  //for still refer conn, let it auto-destroyed after removeConnectionInLoop ends
+	//user loop_->runInLoop, connections_.erase is done only by main loop thread, not any other threads
 	loop_->runInLoop(boost::bind(&TcpServer::removeConnectionInLoop, this, conn));
 }
 
