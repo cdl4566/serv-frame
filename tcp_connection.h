@@ -28,6 +28,7 @@ class TcpConnection : public boost::enable_shared_from_this<TcpConnection>
 		void handleError();
 		void connectEstablished();
 		void connectDestroyed();
+		void forceClose();
 		void setCloseCallback(const CloseCallback & cb){
 			closeCallback_ = cb;
 		}
@@ -46,6 +47,17 @@ class TcpConnection : public boost::enable_shared_from_this<TcpConnection>
 		}
 		void send(const void *data, size_t len);
 		void sendInLoop(const void *data, size_t len);
+
+		void setContext(const boost::any& context){
+			context_ = context;
+		}
+
+		const boost::any& getContext() const {
+			return context_;
+		}
+
+	private:
+		void forceCloseInLoop();
 		
 	private:
 		EventLoop *loop_;
@@ -57,6 +69,7 @@ class TcpConnection : public boost::enable_shared_from_this<TcpConnection>
 		ConnectionCallback connectionCallback_;
 		Buffer inputBuffer_;
 		Buffer outputBuffer_;
+		boost::any context_;
 
 };
 

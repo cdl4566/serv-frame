@@ -45,6 +45,7 @@ class Server{
 		typedef std::set<EntryPtr> Bucket;
 		typedef boost::circular_buffer<Bucket> WeakConnectionList;
 
+		EventLoop *loop_;
 		TcpServer tcpServer_;
 		WeakConnectionList connectionBuckets_;
 };

@@ -132,3 +132,13 @@ void TcpConnection::sendInLoop(const void *data, size_t len)
 		}
 	}
 }
+
+void TcpConnection::forceClose()
+{
+	loop_->queueInLoop(boost::bind(&TcpConnection::forceCloseInLoop, shared_from_this()));
+}
+
+void TcpConnection::forceCloseInLoop()
+{
+	handleClose();
+}
