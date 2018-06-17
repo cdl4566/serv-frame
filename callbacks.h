@@ -8,9 +8,11 @@
 #include <boost/function.hpp>
 
 class TcpConnection;
+class Buffer;
 typedef boost::shared_ptr<TcpConnection> TcpConnectionPtr;
 
 typedef boost::function<void (const TcpConnectionPtr&, Buffer *)> MessageCallback;
 typedef boost::function<void (const TcpConnectionPtr&)> ConnectionCallback;
+typedef boost::function<void ()> TimerCallback;
 
 #endif

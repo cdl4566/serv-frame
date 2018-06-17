@@ -2,6 +2,7 @@
 #include "poller/poll_poller.h"
 #include "poller/epoll_poller.h"
 #include "channel.h"
+#include "timer_queue.h"
 
 #include <sys/eventfd.h>
 #include <boost/bind.hpp>
@@ -32,7 +33,8 @@ EventLoop::EventLoop():	poller_(new EpollPoller(this)),//poller_(new PollPoller(
 							wakeupChannel_(new Channel(this, wakeupFd_)),
 							quit_(false),
 							currentActiveChannel_(NULL),
-							eventHandling_(false)
+							eventHandling_(false),
+							timerQueue_(new TimerQueue(this))
 {
 	assert(t_loopInThisThread == NULL);
 	t_loopInThisThread = this;
@@ -179,3 +181,27 @@ void EventLoop::doPendingFunctors()
 		functors[i]();
 	}
 }
+
+//run after interval time, and then run after every interval time
+void EventLoop::runEvery(double interval, TimerCallback& cb)
+{
+	TimeStamp time(TimeStamp::now());
+	time.addTime(interval);
+	
+	timerQueue_->addTimer(cb, time, interval);
+}
+
+//run after delay time
+//void EventLoop::runAt(double delay, TimerCallback& cb)
+//{
+//	TimeStamp time(TimeStamp::now());
+//	time.addTime(delay);
+
+	//timerQueue_->addTimer(cb, time, 0.0);
+//}
+
+//run after delay time
+//void EventLoop::runAfter(double delay, TimerCallback& cb)
+//{
+//	runAt(delay, cb);
+//}

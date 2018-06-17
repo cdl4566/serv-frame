@@ -3,12 +3,16 @@
 
 #include "tcp_server.h"
 
+#include <set>
+#include <boost/circular_buffer.hpp>
+
 class EventLoop;
 class Server{
 	public:
-		Server(EventLoop *loop, const int port);
+		Server(EventLoop *loop, const int port, int maxIdleMin);
 		~Server();
 		void start();
+		void onTimer();
 		
 	private:
 		void onConnection(TcpConnectionPtr conn);
@@ -27,7 +31,7 @@ class Server{
 
 			~Entry()
 			{
-				TcpConnection conn = weakConn_.lock();
+				TcpConnectionPtr conn = weakConn_.lock();
 				if(conn){
 					//conn->shutdown();
 				}

@@ -29,10 +29,10 @@ class TcpServer{
 		void removeConnectionInLoop(const TcpConnectionPtr & conn);
 		void removeConnection(const TcpConnectionPtr & conn);
 
-		void setMessageCallback(const ConnectionCallback& cb){
+		void setConnectionCallback(const ConnectionCallback& cb){
 			connectionCallback_ = cb;
 		}
-		void setConnectionCallback(const MessageCallback& cb){
+		void setMessageCallback(const MessageCallback& cb){
 			messageCallback_ = cb;
 		}
 	private:

@@ -6,6 +6,7 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
+#include <boost/any.hpp>
 
 #include "buffer.h"
 #include "callbacks.h"

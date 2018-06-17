@@ -8,7 +8,7 @@ int main (int argc, const char * argv[])
 	getlog()->startBg();
 	
 	EventLoop loop;
-	Server server(&loop, 11250);
+	Server server(&loop, 11250, 5);
 	getlog()->LogWrite(LOG_LEVEL_INDISPENSABLE, "SERVER START");
 	server.start();
 

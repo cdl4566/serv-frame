@@ -31,7 +31,7 @@ export TOPDIR
 TARGET := myserver
 
 obj-y += main.o server.o tcp_server.o acceptor.o channel.o event_loop.o evloop_thread.o \
-			evloop_thpool.o tcp_connection.o buffer.o
+			evloop_thpool.o tcp_connection.o buffer.o timer_queue.o timer.o
 obj-y += poller/
 obj-y += base/
 obj-y += application/

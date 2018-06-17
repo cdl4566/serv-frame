@@ -7,6 +7,9 @@
 
 #include "base/CurrentThread.h"
 #include "base/Mutex.h"
+#include "callbacks.h"
+#include "timer_queue.h"
+
 int createEventfd();
 
 class Poller;
@@ -32,6 +35,11 @@ class EventLoop{
 		void handleRead();
 		void queueInLoop(const Functor& cb);
 
+		void runEvery(double interval, TimerCallback& cb);
+		//void runAt(double delay, TimerCallback& cb);
+		//void runAfter(double delay, TimerCallback& cb);
+		
+
 	private:
 		void wakeup();
 		void doPendingFunctors();
@@ -51,6 +59,7 @@ class EventLoop{
 
 		ChannelList activeChannels_;
 		Channel *currentActiveChannel_;
+		boost::scoped_ptr<TimerQueue> timerQueue_;
 };
 
 #endif

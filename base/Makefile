@@ -3,3 +3,4 @@ obj-y += netopr.o
 obj-y += CurrentThread.o
 obj-y += endian.o
 obj-y += log.o
+obj-y += time_stamp.o
