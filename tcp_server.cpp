@@ -49,6 +49,7 @@ void TcpServer::newConnection(int fd)
 	conn->setConnectionCallback(connectionCallback_);
 	conn->setCloseCallback(boost::bind(&TcpServer::removeConnection, this, _1));
 	ioLoop->runInLoop(boost::bind(&TcpConnection::connectEstablished, conn));
+	printf("new connection ok\n");
 }
 
 void TcpServer::removeConnection(const TcpConnectionPtr & conn)

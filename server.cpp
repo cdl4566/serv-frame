@@ -13,7 +13,11 @@ Server::Server(EventLoop *loop, const int port, int maxIdleMin):
 {
 	tcpServer_.setConnectionCallback(boost::bind(&Server::onConnection, this, _1));
 	tcpServer_.setMessageCallback(boost::bind(&Server::onMessage, this, _1, _2));
-	loop_->runEvery(60.0, boost::bind(&Server::onTimer, this));
+
+	boost::function<void ()> funOnTimer = boost::bind(&Server::onTimer, this);
+	loop_->runEvery(60.0, funOnTimer);
+
+	//loop_->runEvery(60.0, boost::bind(&Server::onTimer, this)); //error
 	connectionBuckets_.resize(maxIdleMin);
 }
 
